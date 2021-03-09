@@ -30,7 +30,6 @@ def track_evaluation(truck_track):
                     t3+=time_penalty #ajout d'une pénalité si une fenêtre n'est pas respectée
                     t+=t2
                     
-                    
                 # Evaluation quantité
                 
                 if q >= clients[track[i]][0]:
@@ -83,28 +82,28 @@ def population_evaluation(member):
 #evaluation([generate()]+[10])   
 
 
-def fusion(gauche,droite):
-    resultat = []
-    index_gauche, index_droite = 0, 0
-    while index_gauche < len(gauche) and index_droite < len(droite):        
-        if gauche[index_gauche][1] <= droite[index_droite][1]:
-            resultat.append(gauche[index_gauche])
-            index_gauche += 1
+def merge(left,right):
+    result = []
+    index_left, index_right = 0, 0
+    while index_left < len(left) and index_right < len(right):        
+        if left[index_left][1] <= right[index_right][1]:
+            result.append(left[index_left])
+            index_left += 1
         else:
-            resultat.append(droite[index_droite])
-            index_droite += 1
-    if gauche:
-        resultat.extend(gauche[index_gauche:])
-    if droite:
-        resultat.extend(droite[index_droite:])
-    return resultat
+            result.append(right[index_right])
+            index_right += 1
+    if left:
+        result.extend(left[index_left:])
+    if right:
+        result.extend(right[index_right:])
+    return result
  
-def tri_fusion(m):
+def merge_sort(m):
     if len(m) <= 1:
         return m
-    milieu = len(m) // 2
-    gauche = m[:milieu]
-    droite = m[milieu:]
-    gauche = tri_fusion(gauche)
-    droite = tri_fusion(droite)
-    return list(fusion(gauche, droite))
+    middle = len(m) // 2
+    left = m[:middle]
+    right = m[middle:]
+    left = merge_sort(left)
+    right = merge_sort(right)
+    return list(merge(left, right))

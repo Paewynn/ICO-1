@@ -12,7 +12,7 @@ Created on Thu Mar  4 10:34:59 2021
 
 from constants import elitism, clients, n_trucks, mutation_rate, nb_pop, best_pop
 import random as rd
-from evaluation_functions import population_evaluation, tri_fusion
+from evaluation_functions import population_evaluation, merge_sort
 
 rand=rd.random
 
@@ -102,7 +102,7 @@ def init_pop(n):
     for i in range(n):
         track=generate()
         pop.append(population_evaluation([track,0]))
-    pop=tri_fusion(pop)
+    pop=merge_sort(pop)
     return pop
 
 
@@ -135,7 +135,7 @@ def next_gen(population):
     
     new_gen= new_gen + init_pop(nb_pop-len(new_gen))
     
-    population=tri_fusion(new_gen[:])
+    population=merge_sort(new_gen[:])
     
     return(population)
     
