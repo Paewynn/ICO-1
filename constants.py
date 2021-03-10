@@ -14,11 +14,11 @@ n_trucks = 4 #Nombre de camions
 truck_capacity = 25 #Capacité unitaire pouvant être emmenée par chaque camion
 
 #Paramètres AGs
-nb_pop = 5000 #taille de notre population
-nb_generations = 5000 #nombre de générations étudiées par l'AGs
+nb_pop = 500 #taille de notre population
+nb_generations = 500 #nombre de générations étudiées par l'AGs
 elitism = True #Volonté de ne sélectionner que les meilleurs éléments
-best_pop = 100 #Taille de la population élite : les N-meilleurs membres de la population
-mutation_rate = 0.1 #probabilité de mutation lors du passage à la génération suivante
+best_pop = 20 #Taille de la population élite : les N-meilleurs membres de la population
+mutation_rate = 0.3 #probabilité de mutation lors du passage à la génération suivante
 
 #Pénalités
 time_penalty = 100 #Pénalité si un client n'est pas livré dans les temps

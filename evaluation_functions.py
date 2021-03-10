@@ -8,7 +8,7 @@ Created on Thu Mar  4 10:22:06 2021
 from constants import time_penalty, quantity_penalty, time_matrix, clients, truck_capacity
 
 ###############################################################################
-##########################   fonctions d'évaluation  ##########################
+##########################   Fonctions d'évaluation  ##########################
 ###############################################################################
 
 
@@ -47,14 +47,11 @@ def track_evaluation(truck_track):
                 
         trucks_time.append(t)
         t3+=t
-#    print(track)
-#    print(len(track))
-#    print(len(time_matrix[0]))
+        
     return t3,trucks_time
     
                 
-
-def population_evaluation(member):
+def truck_track_constructor(member):
     track=member[0]   
 
 
@@ -62,27 +59,22 @@ def population_evaluation(member):
     truck_track=[]
     
     for j in range(1,len(track)):
-#        c1=max(0,track[j])
-#        c2=max(0,track[j-1])
-
         if track[j] <= 0:           
             cgt.append(j)
             truck_track.append([0] + track[cgt[-2]+1:cgt[-1]] + [0])
             
     cgt.append(j)
     truck_track.append([0] + track[cgt[-2]+1:cgt[-1]+1] + [0])  
-    
-    
-    t3,trucks_time=track_evaluation(truck_track)
-        
+
+    return truck_track
+
+def population_evaluation(member): 
+    t3,trucks_time=track_evaluation(truck_track_constructor(member))        
     member[1]=t3
-#    print(trucks_time)
     return member
-        
-#evaluation([generate()]+[10])   
 
-
-def merge(left,right):
+#Nous avons reprogrammé ci-dessous un tri fusion
+def merge(left,right): 
     result = []
     index_left, index_right = 0, 0
     while index_left < len(left) and index_right < len(right):        

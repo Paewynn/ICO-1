@@ -10,7 +10,8 @@ Created on Thu Mar  4 10:34:59 2021
 ##########################   fonctions d'évolution   ##########################
 ###############################################################################
 
-from constants import elitism, clients, n_trucks, mutation_rate, nb_pop, best_pop
+
+from constants import elitism, clients, n_trucks, nb_pop, best_pop, mutation_rate
 import random as rd
 from evaluation_functions import population_evaluation, merge_sort
 
@@ -73,7 +74,7 @@ def crossover(parent1,parent2):
     # On complète par les critères manquants            
     m2=[]
 #    print(enfant)
-    for i in Phenon:
+    for i in Phenon[1:]:
 
         
         if i not in child:
@@ -89,6 +90,8 @@ def crossover(parent1,parent2):
         child[m1[i]]=m2[i]
     
     #mutation
+
+    
     if rd.random() < mutation_rate:
         a=rd.randint(0,len(child)-1)
         b=rd.randint(0,len(child)-1)   
@@ -96,7 +99,49 @@ def crossover(parent1,parent2):
             
     return [0]+child 
 
+def uniform_cross(p1,p2):
+    
+    p1 = p1[1:]
+    p2 = p2[1:]
+    
+    child1 = []
+    child2 = []
+    
+    for i in range(len(p1)):
+        if(p1[i] in child1 and p2[i] in child1):
+            child2.append(p1[i])
+            child2.append(p2[i])
+        elif(p1[i] in child2 and p2[i] in child2):
+            child1.append(p1[i])
+            child1.append(p2[i])
+        elif(p1[i] in child2 or p2[i] in child1):
+            child1.append(p1[i])
+            child2.append(p2[i])
+            
+        elif(p1[i] in child1 or p2[i] in child2):
+            child1.append(p2[i])
+            child2.append(p1[i])
+            
+        else:
+            a = rd.randint(1,2)
+            if(a == 1):
+                child1.append(p1[i])
+                child2.append(p2[i])
+            else:
+                child1.append(p2[i])
+                child2.append(p1[i])
+    child1=mutation(child1, mutation_rate)
+    child2=mutation(child2, mutation_rate)
+    
+    return([0]+child1, [0] + child2)
 
+def mutation(child, mutation_rate):
+    if(rd.random()-mutation_rate < 0):
+        point1 = rd.randint(0, len(child)-1)
+        point2 = rd.randint(0, len(child)-1)
+        child[point1], child[point2] = child[point2], child[point1]
+    return(child)
+        
 def init_pop(n):
     pop=[]
     for i in range(n):
@@ -126,11 +171,14 @@ def next_gen(population):
 
     for i in range(nb_child//2):
         
-
-        child=crossover(population[couples[i]][0],population[couples[nb_pop//2+i]][0])
+        # child=crossover(population[couples[i]][0],population[couples[nb_pop//2+i]][0])        
+        # new_gen.append(population_evaluation([child,0]))
         
-        new_gen.append(population_evaluation([child,0]))
-    
+        child1=uniform_cross(population[couples[i]][0],population[couples[nb_pop//2+i]][0])[0]
+        child2=uniform_cross(population[couples[i]][0],population[couples[nb_pop//2+i]][0])[1]
+        new_gen.append(population_evaluation([child1,0]))
+        new_gen.append(population_evaluation([child2,0]))
+        
     new_gen=new_gen+elite
     
     new_gen= new_gen + init_pop(nb_pop-len(new_gen))
